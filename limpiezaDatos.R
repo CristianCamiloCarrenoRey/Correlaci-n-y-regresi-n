@@ -80,3 +80,5 @@ datos_analysis <- datos_trimestre %>%
   )
 
 cat("Dataset final análisis:", nrow(datos_analysis), "\n")
+saveRDS(datos_analysis, "data/datos_analysis.rds")
+
