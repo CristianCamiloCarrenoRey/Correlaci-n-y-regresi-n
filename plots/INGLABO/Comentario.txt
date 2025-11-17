@@ -1,0 +1,39 @@
+El análisis de la distribución de los ingresos revela características comunes en variables económicas, 
+las cuales requieren un tratamiento estadístico específico para una modelización efectiva, como la regresión lineal.
+
+1. Concentración y Asimetría de los Ingresos
+De manera superficial la variable ingreso presenta una alta concentración en el rango bajo, 
+entre el salario mínimo y los 19 millones. Este patrón 
+genera una distribución con una marcada asimetría positiva (o sesgada a la derecha).
+
+Valores Atípicos (Outliers): Los datos que se encuentran fuera de este rango principal, 
+especialmente aquellos con ingresos extremadamente altos, deben considerarse como valores 
+atípicos (outliers). Su presencia infla la media y la desviación estándar y puede distorsionar los resultados de los modelos.
+
+Distribución No-Normal: Como se observa en el histograma, 
+la alta densidad en la parte baja y la larga cola a la derecha indican que los datos no siguen una distribución normal, 
+lo cual es una limitación clave para aplicar muchos métodos de inferencia y modelado, 
+como la regresión lineal ordinaria (MCO), que asume la normalidad de los errores.
+
+2. Solución: La Transformación Logarítmica
+Para mitigar los efectos de la asimetría y los valores atípicos, 
+y para acercar la distribución a la normalidad, se debe aplicar una 
+transformación logarítmica a la variable ingreso.
+
+Efecto de la Transformación: Esta transformación comprime la escala en los valores altos (la cola) y, en términos relativos, 
+le da más peso y dispersión a las diferencias entre los valores bajos. Esto ayuda a estabilizar la varianza y a reducir la asimetría, 
+acercando la forma de la distribución a una curva de campana.
+
+Beneficio para la Regresión: Al lograr una distribución más simétrica y normal, y al mitigar la influencia de los outliers, 
+la transformación logarítmica mejora el cumplimiento de los supuestos del modelo de regresión lineal. Esto resulta en coeficientes 
+más estables y estimaciones más eficientes e interpretables.
+
+Resultados Estadisticos
+Conteo de Valores Atípicos (Outliers)Los dos métodos aplicados para contar outliers arrojan resultados muy diferentes, 
+lo que refuerza la conclusión de que la distribución no es normal:Outliers IQR (5,657): Este método es robusto frente a 
+la asimetría y detecta una cantidad considerable de outliers. Estos son los valores que caen fuera de los límites de Q_1 - 1.5 * IQR y Q_3 + 1.5 
+* \IQR.Outliers Z-score (795): Este método asume normalidad y es más sensible a las grandes desviaciones estándar causadas por los propios outliers. 
+Al basarse en la media y la desviación estándar, su conteo es mucho menor, pues el cálculo es distorsionado por los valores extremos.Conclusión sobre Outliers: 
+La gran diferencia en los conteos (5,657 vs. 795) indica que el método IQR es el más apropiado para identificar los valores extremos dada la asimetría.
+
+Las restantes se pueden comentar al final

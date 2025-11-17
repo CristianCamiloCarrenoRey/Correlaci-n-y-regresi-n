@@ -1,0 +1,9 @@
+Con base en el análisis exploratorio realizado, se observa que los ingresos laborales (INGLABO) presentan una distribución altamente asimétrica, 
+con una gran concentración de personas en niveles de ingreso bajos y algunos valores extremos elevados. Las variables relacionadas con el tiempo 
+trabajado, como P6800 (horas normales) y P6850 (horas trabajadas la semana pasada), muestran variación moderada y tendencias que sugieren una posible 
+relación positiva con el ingreso, dado que mayores horas suelen asociarse con mayores niveles de remuneración. Asimismo, la variable RAMA2D_R4 evidencia 
+diferencias marcadas en la distribución del ingreso entre actividades económicas, lo cual indica que el sector en el que se desempeña la persona influye 
+en sus niveles de ingreso. Por lo anterior, se espera que al estimar el modelo de regresión, las horas trabajadas contribuyan significativamente a explicar 
+las variaciones en el ingreso laboral, mientras que la actividad económica introduzca diferencias sistemáticas entre grupos ocupacionales. 
+En conjunto, se anticipa un modelo donde tanto las variables cuantitativas como las categóricas aporten a la explicación del ingreso, 
+pero con la presencia de heterogeneidad y posiblemente efectos no lineales debido a la naturaleza sesgada del ingreso.
