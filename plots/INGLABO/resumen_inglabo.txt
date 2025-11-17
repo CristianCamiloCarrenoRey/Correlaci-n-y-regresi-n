@@ -1,0 +1,20 @@
+Resumen INGLABO (variable: inglabo )
+
+        n    mean  median      sd    mad     IQR min    q1      q3   max
+25% 57436 1699076 1300000 2349049 815430 1100000   0 7e+05 1800000 1e+08
+    skewness kurtosis    cv
+25%   11.315  273.024 1.383
+
+Quantiles:
+     0%      1%      5%     10%     25%     50%     75%     90%     95%     99% 
+0.0e+00 0.0e+00 2.0e+05 3.0e+05 7.0e+05 1.3e+06 1.8e+06 3.4e+06 5.0e+06 1.0e+07 
+   100% 
+1.0e+08 
+
+Outliers IQR: 5657 Outliers z: 795 
+
+	Anderson-Darling normality test
+
+data:  ing_clean[!is.na(ing_clean)]
+A = 6831.2, p-value < 2.2e-16
+

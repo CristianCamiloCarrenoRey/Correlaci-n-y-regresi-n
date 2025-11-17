@@ -1,0 +1,31 @@
+INGLABO  - Ingreso laboral total
+
+La variable INGLABO representa el total de ingresos laborales recibidos por la persona ocupada.
+Este valor corresponde al ingreso monetario derivado del trabajo principal que la persona realiza
+y se capta de manera continua, permitiendo registrar montos desde 0 hasta 30 millones de pesos.
+La información se obtiene mediante informante directo para personas de 18 años o más, o para jóvenes de 10 a 17
+años que trabajen o estén buscando empleo; en los demás casos, se acepta un informante idóneo dentro del hogar.
+INGLABO es una variable fundamental para el análisis de mercado laboral, ya que permite estudiar la distribución salarial,
+la relación entre ingresos y horas trabajadas, así como comparaciones entre ramas de actividad económica u otras características socioeconómicas.
+
+P6800    - Horas trabajadas
+
+La variable P6800 registra el número de horas que la persona trabaja normalmente durante una semana en su empleo principal. 
+No se refiere a la semana de referencia, sino a su patrón habitual de trabajo. Esta variable excluye tiempos no laborales como desplazamientos, 
+comidas o actividades académicas fuera del aula en el caso de docentes. Además, si la persona trabaja de manera eventual o comenzó recientemente 
+en el empleo, se toma como referencia la semana de actividad. P6800 es un indicador clave para caracterizar la intensidad laboral y permite identificar 
+jornadas parciales, jornadas extendidas y condiciones laborales irregulares. Debido a su naturaleza estructural, es una de las variables más confiables 
+para explicar ingresos laborales en análisis estadísticos y modelos de regresión.
+
+
+P6850 — Horas trabajadas la semana pasada
+
+La variable P6850 mide cuántas horas trabajó realmente la persona durante la semana inmediatamente anterior a la entrevista en su trabajo principal.
+A diferencia de P6800, esta variable refleja el comportamiento efectivo del tiempo trabajado y captura fluctuaciones debidas a licencias, vacaciones,
+festivos, reducción de labores, enfermedad u otros factores coyunturales. El cálculo también excluye tiempos de desplazamiento y comidas. Esta variable
+es sumamente útil para identificar inestabilidad laboral, subempleo por horas, interrupciones temporales y variaciones semanales en el esfuerzo laboral. 
+En modelos de regresión sobre ingresos, P6850 suele usarse como variable de control para capturar factores de corto plazo que afectan el ingreso observado.
+
+RAMA2D_R4 - Rama de actividad económica (agrupada en 3)
+La variable RAMA2D_R4 clasifica la actividad económica principal de la empresa o negocio donde la persona trabaja,
+siguiendo una codificación de dos dígitos similar a la Clasificación Industrial Internacional Uniforme (CIIU). Esta variable permite identificar en qué sector económico se ubica el empleo del encuestado, como agricultura, industria, comercio, servicios, entre otros. Es una variable crucial para estudios sectoriales del mercado laboral, ya que los ingresos, las horas trabajadas y las condiciones laborales tienden a variar significativamente entre ramas de actividad. También es especialmente útil en análisis de regresión como una variable categórica que controla por diferencias estructurales entre sectores.

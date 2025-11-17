@@ -37,7 +37,7 @@ cat("Total combinado:", nrow(datos_completos), "\n")
 
 # 3) CONSOLIDAR POR DIRECTORIO ----
 
-vars_needed <- c("directorio","inglabo","p6800","p6940","rama2d_r4","mes")
+vars_needed <- c("directorio","inglabo","p6800","p6850","rama2d_r4","mes")
 
 # verificar que existen
 missing <- setdiff(vars_needed, names(datos_completos))
@@ -52,7 +52,7 @@ datos_trimestre <- datos_completos %>%
   summarise(
     inglabo = first(inglabo[!is.na(inglabo)]),
     p6800   = first(p6800[!is.na(p6800)]),
-    p6940   = first(p6940[!is.na(p6940)]),
+    p6850   = first(p6850[!is.na(p6850)]),
     rama2d_r4 = first(rama2d_r4[!is.na(rama2d_r4)]),
     mes = first(mes[!is.na(mes)]),
     .groups = "drop"
@@ -66,7 +66,7 @@ datos_trimestre <- datos_trimestre %>%
   mutate(
     inglabo_num = suppressWarnings(parse_number(as.character(inglabo))),
     p6800_num   = suppressWarnings(parse_number(as.character(p6800))),
-    p6940_num   = suppressWarnings(parse_number(as.character(p6940))),
+    p6850_num   = suppressWarnings(parse_number(as.character(p6850))),
     rama_num    = suppressWarnings(parse_number(as.character(rama2d_r4)))
   )
 
@@ -76,7 +76,7 @@ datos_analysis <- datos_trimestre %>%
   filter(!is.na(inglabo_num), !is.na(p6800_num)) %>%
   mutate(
     horas = p6800_num,
-    dias  = p6940_num
+    dias  = p6850_num
   )
 
 cat("Dataset final análisis:", nrow(datos_analysis), "\n")

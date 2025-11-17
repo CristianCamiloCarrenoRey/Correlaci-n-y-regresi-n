@@ -1,0 +1,12 @@
+ANÁLISIS VARIABLE P6850 (Horas trabajadas semana pasada)
+
+        n     mean median       sd     mad IQR min q1 q3 max   skewness
+25% 57436 43.05789     47 14.88351 10.3782   8   0 40 48 130 -0.3931576
+    kurtosis
+25% 4.909486
+
+Quantiles:
+  0%   1%   5%  10%  25%  50%  75%  90%  95%  99% 100% 
+   0    0   15   21   40   47   48   60   64   84  130 
+
+Outliers IQR: 11027  | Outliers Z-score: 239 
