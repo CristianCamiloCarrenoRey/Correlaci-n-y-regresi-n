@@ -35,5 +35,3 @@ la asimetría y detecta una cantidad considerable de outliers. Estos son los val
 * \IQR.Outliers Z-score (795): Este método asume normalidad y es más sensible a las grandes desviaciones estándar causadas por los propios outliers. 
 Al basarse en la media y la desviación estándar, su conteo es mucho menor, pues el cálculo es distorsionado por los valores extremos.Conclusión sobre Outliers: 
 La gran diferencia en los conteos (5,657 vs. 795) indica que el método IQR es el más apropiado para identificar los valores extremos dada la asimetría.
-
-Las restantes se pueden comentar al final
