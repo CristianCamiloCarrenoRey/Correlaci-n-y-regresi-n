@@ -1,6 +1,5 @@
 # ============================================================
-#   LIMPIEZA DE DATOS + MODELO + SIGNIFICANCIAS + ANOVA
-#   Guardando resultados en "resultadosDatosLimpios"
+#   LIMPIEZA + ELIMINACIÓN DE SECTORES RAROS + REGRESIÓN
 # ============================================================
 
 library(dplyr)
@@ -10,8 +9,44 @@ library(dplyr)
 # ------------------------------------------------------------
 data <- readRDS("data/datos_analysis.rds")
 
+cat("Variables disponibles:\n")
+print(names(data))
+
 # ------------------------------------------------------------
-# 2. Eliminar outliers por IQR
+# 2. Verificar variables requeridas
+# ------------------------------------------------------------
+vars_requeridas <- c("inglabo", "p6800", "p6850", "rama2d_r4")
+faltantes <- vars_requeridas[!vars_requeridas %in% names(data)]
+
+if(length(faltantes) > 0){
+  stop(paste("ERROR: Faltan variables:", paste(faltantes, collapse = ", ")))
+}
+
+# ------------------------------------------------------------
+# 3. Eliminar sectores con baja frecuencia
+# ------------------------------------------------------------
+min_frec <- 100   # ⭐ Puedes cambiar este valor
+
+cat("\nFrecuencias originales de sectores:\n")
+print(table(data$rama2d_r4))
+
+freq <- data %>%
+  count(rama2d_r4) %>%
+  filter(n >= min_frec)
+
+sectores_validos <- freq$rama2d_r4
+
+data <- data %>%
+  filter(rama2d_r4 %in% sectores_validos)
+
+cat("\nSectores eliminados por baja frecuencia:\n")
+print(setdiff(unique(data$rama2d_r4), sectores_validos))
+
+cat("\nSectores restantes:\n")
+print(table(data$rama2d_r4))
+
+# ------------------------------------------------------------
+# 4. Eliminar outliers por IQR
 # ------------------------------------------------------------
 remove_outliers_iqr <- function(df) {
   df %>% mutate(across(where(is.numeric), function(x) {
@@ -29,37 +64,37 @@ remove_outliers_iqr <- function(df) {
 data_clean <- remove_outliers_iqr(data)
 
 # ------------------------------------------------------------
-# 3. Transformación log1p(INGLABO)
+# 5. Transformación log1p(inglabo)
 # ------------------------------------------------------------
-data_clean <- data_clean %>% mutate(log_inglabo = log1p(INGLABO))
+data_clean <- data_clean %>%
+  mutate(log_inglabo = log1p(inglabo))
 
 # ------------------------------------------------------------
-# 4. Dummies RAMA2D_R4 (si es necesario)
+# 6. Convertir rama2d_r4 en factor
 # ------------------------------------------------------------
-data_clean$RAMA2D_R4 <- as.factor(data_clean$RAMA2D_R4)
+data_clean$rama2d_r4 <- as.factor(data_clean$rama2d_r4)
 
 # ------------------------------------------------------------
-# 5. Modelo de regresión
+# 7. Modelo de regresión
 # ------------------------------------------------------------
 modelo <- lm(
-  log_inglabo ~ P6800 + P6850 + RAMA2D_R4,
+  log_inglabo ~ p6800 + p6850 + rama2d_r4,
   data = data_clean
 )
 
 # ------------------------------------------------------------
-# 6. Crear carpeta de resultados
+# 8. Crear carpeta de resultados
 # ------------------------------------------------------------
 dir.create("resultadosDatosLimpios", showWarnings = FALSE)
 
 # ------------------------------------------------------------
-# 7. Guardar resultados
+# 9. Guardar resultados
 # ------------------------------------------------------------
 
 # --- Coeficientes ---
 write.csv(
   summary(modelo)$coefficients,
-  "resultadosDatosLimpios/coeficientes.csv",
-  row.names = TRUE
+  "resultadosDatosLimpios/coeficientes.csv"
 )
 
 # --- ANOVA ---
@@ -68,19 +103,15 @@ write.csv(
   "resultadosDatosLimpios/anova.csv"
 )
 
-# --- R2 y R2 ajustado ---
+# --- R2 y Ajustado ---
 r2_df <- data.frame(
   R2 = summary(modelo)$r.squared,
   R2_Ajustado = summary(modelo)$adj.r.squared
 )
 
-write.csv(
-  r2_df,
-  "resultadosDatosLimpios/r2.csv",
-  row.names = FALSE
-)
+write.csv(r2_df, "resultadosDatosLimpios/r2.csv", row.names = FALSE)
 
-# --- Significancia global (F-test) ---
+# --- Significancia global ---
 f <- summary(modelo)$fstatistic
 p_global <- pf(f[1], f[2], f[3], lower.tail = FALSE)
 
@@ -91,18 +122,16 @@ significancia_global <- data.frame(
   p_value_global = p_global
 )
 
-write.csv(
-  significancia_global,
-  "resultadosDatosLimpios/significancia_global.csv",
-  row.names = FALSE
-)
+write.csv(significancia_global,
+          "resultadosDatosLimpios/significancia_global.csv",
+          row.names = FALSE)
 
-# --- Resumen completo del modelo en TXT ---
+# --- Resumen completo ---
 sink("resultadosDatosLimpios/ResumenModelo.txt")
 cat("=====================================================\n")
-cat("         RESUMEN COMPLETO DEL MODELO\n")
+cat("          RESUMEN COMPLETO DEL MODELO LIMPIO\n")
 cat("=====================================================\n\n")
 print(summary(modelo))
 sink()
 
-cat("\n✔️ Todos los resultados fueron guardados en la carpeta 'resultadosDatosLimpios'\n")
+cat("\n✔️ Proceso completado. Resultados en 'resultadosDatosLimpios/'\n")
