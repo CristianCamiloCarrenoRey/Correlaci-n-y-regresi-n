@@ -1,3 +1,14 @@
+# Instalar si no están
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(lmtest)) install.packages("lmtest")
+if(!require(car)) install.packages("car")
+install.packages("farver")
+  
+# Cargar librerías
+library(ggplot2)
+library(lmtest)
+library(car)
+
 library(dplyr)
 
 # ============================================================
@@ -6,7 +17,7 @@ library(dplyr)
 datos_analysis <- readRDS("data/datos_analysis.rds")
 
 # Crear carpeta de resultados si no existe
-if(!dir.exists("resultados")){
+if (!dir.exists("resultados")) {
   dir.create("resultados")
 }
 
@@ -73,3 +84,84 @@ cat("\n5. Intervalos de Confianza:\n")
 print(tabla_ci)
 
 cat("\n\nArchivos CSV guardados en la carpeta 'resultados/'.\n")
+
+
+install.packages("ggplot2")
+
+install.packages("ggplot2")
+install.packages("lmtest")
+install.packages("car")
+
+
+
+# ============================================================
+# 9. VALIDACIÓN DE SUPUESTOS (GRÁFICOS + PRUEBAS)
+# ============================================================
+
+# Crear carpeta si no existe
+if(!dir.exists("resultados_supuestos")) dir.create("resultados_supuestos")
+
+residuos <- modelo$residuals
+ajustados <- modelo$fitted.values
+
+# 9.1 SUPUESTO DE LINEALIDAD 
+png("resultados_supuestos/linealidad_residuos_vs_ajustados.png")
+ plot( 
+  ajustados,
+   residuos,
+    main = "Residuos vs Ajustados",
+     xlab = "Valores Ajustados",
+      ylab = "Residuos"
+       )
+      
+ abline(h = 0, col = "red")
+ dev.off()
+# =======================
+# 9.2 Normalidad de los errores
+# =======================
+# Q-Q plot
+png("resultados_supuestos/qqplot_residuos.png")
+qqnorm(residuos)
+qqline(residuos, col="red")
+dev.off()
+
+# Prueba de Shapiro-Wilk (solo 5000 obs si hay más)
+shapiro_res <- shapiro.test(if(length(residuos) > 5000) sample(residuos, 5000) else residuos)
+write.csv(data.frame(statistic = shapiro_res$statistic,
+                     pvalue = shapiro_res$p.value),
+          "resultados_supuestos/shapiro_normalidad.csv",
+          row.names = FALSE)
+
+# =======================
+# 9.3 Homocedasticidad
+# =======================
+library(lmtest)
+bp <- bptest(modelo)
+write.csv(data.frame(statistic = bp$statistic,
+                     pvalue = bp$p.value),
+          "resultados_supuestos/breusch_pagan.csv",
+          row.names = FALSE)
+
+# Gráfico para visualizar heterocedasticidad
+png("resultados_supuestos/residuos_vs_ajustados_hetero.png")
+plot(ajustados, residuos,
+     main="Residuos vs Ajustados ",
+     xlab="Valores Ajustados", ylab="Residuos")
+abline(h=0, col="red")
+lines(lowess(ajustados, residuos), col="blue")
+dev.off()
+
+# =======================
+# 9.4 Independencia
+# =======================
+library(lmtest)
+dw <- dwtest(modelo)
+write.csv(data.frame(statistic = dw$statistic,
+                     pvalue = dw$p.value),
+          "resultados_supuestos/durbin_watson.csv",
+          row.names = FALSE)
+
+# Gráfico de autocorrelación (respaldo visual)
+png("resultados_supuestos/acf_residuos.png")
+acf(residuos, main="Autocorrelación de Residuos (Independencia)")
+dev.off()

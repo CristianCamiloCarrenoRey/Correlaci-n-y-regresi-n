@@ -1,0 +1,54 @@
+# ============================================================
+# 9. VALIDACIÓN DE SUPUESTOS
+# ============================================================
+
+
+residuos <- modelo$residuals
+ajustados <- modelo$fitted.values
+
+
+
+# 9.1 SUPUESTO DE LINEALIDAD
+# 9.1 SUPUESTO DE LINEALIDAD
+png("resultados_supuestos/linealidad_residuos_vs_ajustados.png")
+
+plot(
+  ajustados, residuos,
+  main = "Residuos vs Ajustados",
+  xlab = "Valores Ajustados",
+  ylab = "Residuos"
+)
+
+abline(h = 0, col = "red")
+
+dev.off()
+
+# 9.2 SUPUESTO DE NORMALIDAD
+library(ggplot2)
+
+png("resultados_supuestos/qqplot_residuos.png")
+qqnorm(residuos)
+qqline(residuos, col = "red")
+dev.off()
+
+# Test de Shapiro (solo 5000 obs por límite del test)
+shapiro_res <- shapiro.test(sample(residuos, 5000))
+write.csv(data.frame(statistic = shapiro_res$statistic,
+                     pvalue = shapiro_res$p.value),
+          "resultados_supuestos/shapiro_normalidad.csv",
+          row.names = FALSE)
+
+# 9.3 SUPUESTO DE HOMOCEDASTICIDAD
+library(lmtest)
+bp <- bptest(modelo)
+write.csv(data.frame(statistic = bp$statistic,
+                     pvalue = bp$p.value),
+          "resultados_supuestos/breusch_pagan.csv",
+          row.names = FALSE)
+
+# 9.4 SUPUESTO DE INDEPENDENCIA
+dw <- dwtest(modelo)
+write.csv(data.frame(statistic = dw$statistic,
+                     pvalue = dw$p.value),
+          "resultados_supuestos/durbin_watson.csv",
+          row.names = FALSE)
